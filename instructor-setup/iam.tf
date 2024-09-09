@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "gitpod_assume_role" {
     condition {
       test     = "StringEquals"
       variable = "services.gitpod.io/idp:sub"
-      values   = ["https://github.com/datamindedbe/kubernetes_academy_course"]
+      values   = ["https://github.com/datamindedacademy/kubernetes_academy_course"]
     }
 
     principals {
