@@ -1,18 +1,19 @@
 resource "aws_iam_role" "kubernetes_workshop_gitpod_role" {
   name               = "kubernetes-workshop-gitpod-role"
   assume_role_policy = data.aws_iam_policy_document.gitpod_assume_role.json
+  max_session_duration = 28800
 }
 
 resource "aws_iam_role_policy" "gitpod_permissions" {
   policy = data.aws_iam_policy_document.gitpod_permissions.json
   role   = aws_iam_role.kubernetes_workshop_gitpod_role.id
+  name = "gitpod_permissions"
 }
 
 data "aws_iam_policy_document" "gitpod_permissions" {
   statement {
     actions = ["eks:DescribeCluster"]
     resources = ["*"]
-    sid = "gitpod permissions"
     effect  = "Allow"
   }
 }
