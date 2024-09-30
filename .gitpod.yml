@@ -11,6 +11,11 @@ tasks:
     command: |
       sudo update-alternatives --install /usr/bin/www-browser www-browser /workspace/bin/open.sh 100
       exit
+  - name: Assume AWS role, setup cluster configuration
+    init: |
+      gp idp login aws --role-arn arn:aws:iam::338791806049:role/kubernetes-workshop-gitpod-role --duration-seconds=28800
+      eval "$(aws configure export-credentials --format env)"
+      ./connect_cluster.sh
 
 image:
   file: .gitpod.dockerfile

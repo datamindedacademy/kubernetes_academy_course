@@ -13,11 +13,14 @@ When there are separate instructions for both situation.
 
 ## Using a realworld kubernetes cluster 
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/datamindedbe/kubernetes_academy_course)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/datamindedacademy/kubernetes_academy_course)
 
-Usage:
-- run the following command in gitpod to get access to the cluster: `gp idp login aws --role-arn arn:aws:iam::299641483789:role/kubernetes-workshop-gitpod-role --duration-seconds=28800`
-- run then: `./connect_cluster.sh k8s-24vTxK`
+Normally, when executing in Gitpod the correct credentials are already set and you should be able to access the cluster.
+Try running `kubectl get pods` to see if you have access to the cluster.
+
+If not, you can manually set your credentials by running the following command:
+- get access to the AWS account: `gp idp login aws --role-arn arn:aws:iam::338791806049:role/kubernetes-workshop-gitpod-role --duration-seconds=28800`
+- configure your `.kube/config` using: `./connect_cluster.sh`
 
 More details on how to integrate gitpod with an eks cluster can be found on the following link: https://www.gitpod.io/docs/integrations/aws
 
