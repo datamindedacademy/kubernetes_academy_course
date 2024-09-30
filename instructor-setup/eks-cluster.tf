@@ -1,6 +1,6 @@
 data "aws_subnets" "private" {
   filter {
-    name   = "vpc-id"
+    name = "vpc-id"
     values = [module.vpc.vpc_id]
   }
   tags = {
@@ -8,20 +8,23 @@ data "aws_subnets" "private" {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
+
 module "eks" {
   source                         = "terraform-aws-modules/eks/aws"
-  version                        = "19.9.0"
+  version                        = "20.24.2"
   cluster_name                   = local.cluster_name
-  cluster_version                = "1.27"
+  cluster_version                = "1.30"
   subnet_ids                     = data.aws_subnets.private.ids
   vpc_id                         = module.vpc.vpc_id
   enable_irsa                    = true
   cluster_endpoint_public_access = true
 
   eks_managed_node_group_defaults = {
-    disk_size                    = 50
-    instance_types               = ["t3.large"]
-    pre_bootstrap_user_data      = local.ssm_userdata
+    disk_size               = 50
+    instance_types = ["t3.large"]
+    pre_bootstrap_user_data = local.ssm_userdata
     iam_role_additional_policies = { "ssm" : "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore" }
   }
 
@@ -51,45 +54,44 @@ module "eks" {
   eks_managed_node_groups = {
     default_node_group = {
       min_size     = 0
-      max_size     = 3
+      max_size     = 5
       desired_size = 2
     }
   }
 
-  manage_aws_auth_configmap = true
-  aws_auth_users            = [
-    {
-      userarn = aws_iam_user.workshop_user.arn
-      groups  = ["system:masters"]
+  access_entries = {
+    workshop_user = {
+      principal_arn = aws_iam_role.kubernetes_workshop_gitpod_role.arn
+      type          = "STANDARD"
+
+
+      policy_associations = {
+        workshop_user = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            type = "cluster"
+          }
+        }
+      }
     }
-  ]
-
-  aws_auth_roles = [
-    {
-      rolearn = "arn:aws:iam::${local.account_id}:role/AWSReservedSSO_AdministratorAccess_3927b2c3b8ca005c"
-      groups  = ["system:masters"]
-    },
-    {
-      rolearn = "arn:aws:iam::${local.account_id}:role/kubernetes-workshop-gitpod-role"
-      groups  = ["system:masters"]
-    }
-  ]
-
-  aws_auth_accounts = [
-    local.account_id
-  ]
-
+  }
+  enable_cluster_creator_admin_permissions = true
   tags = {
     Terraform = "true"
   }
 }
 
-resource "aws_iam_openid_connect_provider" "eks_connect_provider_gitpod" {
-  url             = "https://services.gitpod.io/idp"
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [
-    "F2309CE0494F89BD1C502084FA42243CC18727FF",
-    "349C385FF8E330F20EAD733CD36FB435FEE0B403",
-    "08745487E891C19E3078C1F2A07E452950EF36F6"
-  ]
+data "aws_iam_openid_connect_provider" "eks_connect_provider_gitpod" {
+  url = "https://services.gitpod.io/idp"
 }
+
+# If the OIDC provider does not exist in the aws account, you can create it with the following code:
+# resource "aws_iam_openid_connect_provider" "eks_connect_provider_gitpod" {
+#   url = "https://services.gitpod.io/idp"
+#   client_id_list = ["sts.amazonaws.com"]
+#   thumbprint_list = [
+#     "F2309CE0494F89BD1C502084FA42243CC18727FF",
+#     "349C385FF8E330F20EAD733CD36FB435FEE0B403",
+#     "08745487E891C19E3078C1F2A07E452950EF36F6"
+#   ]
+# }

@@ -43,7 +43,7 @@ resource "aws_route53_record" "waydata" {
   allow_overwrite = true
   name            = each.value.name
   records         = [each.value.record]
-  ttl             = 60
+  ttl             = 30
   type            = each.value.type
   zone_id         = aws_route53_zone.waydata.zone_id
 }

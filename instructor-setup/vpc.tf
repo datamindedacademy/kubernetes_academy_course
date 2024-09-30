@@ -9,10 +9,10 @@ module "vpc" {
   version = "5.1.2"
 
   name                          = "docker-k8s-vpc"
-  cidr                          = "10.2.0.0/16"
+  cidr                          = "10.1.0.0/16"
   azs                           = slice(data.aws_availability_zones.available.names, 0, 3)
-  private_subnets               = ["10.2.128.0/20", "10.2.144.0/20", "10.2.160.0/20"]
-  public_subnets                = ["10.2.0.0/20", "10.2.16.0/20", "10.2.32.0/20"]
+  private_subnets               = ["10.1.128.0/20", "10.1.144.0/20", "10.1.160.0/20"]
+  public_subnets                = ["10.1.0.0/20", "10.1.16.0/20", "10.1.32.0/20"]
   enable_nat_gateway            = true
   single_nat_gateway            = true
   enable_dns_hostnames          = true

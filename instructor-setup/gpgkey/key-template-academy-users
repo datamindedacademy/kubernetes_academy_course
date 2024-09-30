@@ -1,6 +1,0 @@
-Key-Type: RSA
-Subkey-Type: RSA
-Name-Real: kubernetesparticipant
-Name-Comment: PGP key for kubernetesparticipant 's AWS IAM user
-Name-Email: kubernetesparticipant@dataminded.be
-Expire-Date: 0

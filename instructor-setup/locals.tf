@@ -1,10 +1,7 @@
 locals {
   aws_region         = "eu-west-1"
-  account_id         = "299641483789"
-  academy_user       = "kubernetesparticipant"
-  default_passphrase = "Data Minded r0cks!"
-  groupname          = "kubernetes-workshop"
-  cluster_name       = "k8s-${random_string.cluster_suffix.result}"
+  account_id         = "338791806049"
+  cluster_name       = "k8sacademy-${random_string.cluster_suffix.result}"
   tcp_protocol_code  = 6
   ssm_userdata = <<-EOT
   #!/bin/bash

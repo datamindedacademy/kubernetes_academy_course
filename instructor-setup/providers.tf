@@ -12,10 +12,11 @@ provider "kubernetes" {
 
 provider "aws" {
   region              = "eu-west-1"
-  allowed_account_ids = ["299641483789"]
+  allowed_account_ids = ["338791806049"]
   default_tags {
     tags = {
       "Course" = "Docker and Kubernetes"
+      "Terraform" = "true"
     }
   }
 }
