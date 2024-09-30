@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:eu-west-1:338791806049:certificate/e2abe990-b0ed-46cf-9d43-94fff12d4fa6"
+    external-dns.alpha.kubernetes.io/hostname: "<TODO>.k8sacademy.waydata.be"
+  labels:
+    app: <TODO>
+  name: <TODO>
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: <TODO>
+  - name: https
+    port: 443
+    targetPort: <TODO>
+  selector:
+    app: <TODO>
+  type: LoadBalancer

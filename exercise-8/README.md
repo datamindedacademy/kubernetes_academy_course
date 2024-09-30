@@ -4,35 +4,20 @@
 
 Setup ingress for 2 deployments of our cats deployment with different images.
 
-# Local setup
+## Eks cluster
+
+In order to get ingress running, you first need a cluster-ip service for your deployments.
+Now you can create the ingress resource, using the `ingress-template.yaml` and filling in the <TODO> fields
+- define the dns records corresponding to the 2 cat services
+- create 2 rules that forward requests to the respective services using a convention like `<first-username>-cat-<index>.k8sacademy.waydata.be`
+
+Note: 
+- if your target-type is instance, your services must be a NodePort as it then uses the nodeport to go to your services
+- ingressClassName: "alb"
+
+## Local setup (microk8s)
 - cat0.example.com cat0-svc
 - cat1.example.com cat1-svc
 
 Make sure your local kubernetes cluster has ingress enabled
 Make sure to change the /etc/hosts with the correct entries such that they are routable
-
-# Eks cluster
-
-## Help specifying your ingress resource
-
-### Required annotations
-```
-nginx.ingress.kubernetes.io/rewrite-target: /
-alb.ingress.kubernetes.io/scheme: "internet-facing"
-alb.ingress.kubernetes.io/target-type: "ip"
-external-dns.alpha.kubernetes.io/hostname: "<first-username>-cat0.k8sacademy.waydata.be,<first-username>-cat1.k8sacademy.waydata.be"
-alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:eu-west-1:338791806049:certificate/e2abe990-b0ed-46cf-9d43-94fff12d4fa6"
-```
-For more details on the supported annotations, take a look at the aws load balancer controller: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/
-
-Note: if your target-type is instance, your services must be a NodePort as it then uses the nodeport to go to your services
-
-### Specify ingressClassName
-
-`ingressClassName: "alb"`
-
-## Define the rules
-You must specify two rules that forward an incoming request to the respective service.
-host parameter looks as follows: `<first-username>-cat-<index>.k8sacademy.waydata.be`
-
-An ingress template can be generated using: `kubectl create ingress simple --rule="niels-cat0.k8sacademy.waydata.be/=cat0-svc:80" --class=alb --dry-run=client -o yaml > ingress.yaml`

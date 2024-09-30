@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: <TODO>
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/target-type: "ip"
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:eu-west-1:338791806049:certificate/e2abe990-b0ed-46cf-9d43-94fff12d4fa6"
+    external-dns.alpha.kubernetes.io/hostname: "<TODO>.k8sacademy.waydata.be,<TODO>.k8sacademy.waydata.be"
+spec:
+  ingressClassName: "alb"
+  rules:
+    - host: <TODO>.k8sacademy.waydata.be
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: <TODO>
+                port:
+                  number: <TODO>
+    - host: <TODO>.k8sacademy.waydata.be
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: <TODO>
+                port:
+                  number: <TODO>
+

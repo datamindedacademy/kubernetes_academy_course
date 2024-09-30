@@ -3,14 +3,6 @@
 - if you are using a local kubernetes cluster (like microk8s or k3s), you can use the hostPath property to mount a local directory
 - if you are using eks as kubernetes cluster you should use the gp3 storage class for your persistent volume claim
 
-## For local setup with microk8s
-- launch a nginx pod and go open the home page (port 80) in the browser
-  - it should mention something like: welcome to nginx...
-- create a custom index.html and put it at /tmp/storage/data
-- create nginx pod with volume mount to the host
-  - mount the /tmp/storage/data folder under /usr/share/nginx/html/ as that is where nginx looks for the index.html file by default
-- Do the same as before but now using a pv and pvc using same `/tmp/storage/data` directory
-
 ## For setup using an eks cluster using gitpod
 
 ### emptydir volumes
@@ -29,3 +21,12 @@ On eks I created a storageclass called gp3, which you should use:
 - check the access logs in file `/var/log/nginx/access.log`. Do you understand where the entries come from?
 - recreate the pod
 - check whether the previous access logs still exist in `/var/log/nginx/access.log`
+
+## For local setup with microk8s
+- launch a nginx pod and go open the home page (port 80) in the browser
+  - it should mention something like: welcome to nginx...
+- create a custom index.html and put it at /tmp/storage/data
+- create nginx pod with volume mount to the host
+  - mount the /tmp/storage/data folder under /usr/share/nginx/html/ as that is where nginx looks for the index.html file by default
+- Do the same as before but now using a pv and pvc using same `/tmp/storage/data` directory
+
