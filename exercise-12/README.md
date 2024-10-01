@@ -2,6 +2,6 @@
 
 ## Steps
 
-- create daemonset from nginx pod
-- mount /var/log/nginx to emptyDir
-- go to website
+- create daemonset for fluentd
+- inspect the number of instances
+- check the logs

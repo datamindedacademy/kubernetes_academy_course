@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: cat-webapp
   name: cat-webapp
@@ -13,7 +12,6 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: cat-webapp
     spec:
@@ -36,4 +34,3 @@ spec:
       - name: prom-vol
         configMap:
           name: my-prometheus-config
-status: {}
