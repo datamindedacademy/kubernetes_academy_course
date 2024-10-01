@@ -7,15 +7,6 @@ In order to troubleshoot some networking issues, it is best to have a look at th
 
 ![](./networkSetupGitpodEks.drawio.png "network-setup")
 
-
-### cluster-ip
-- create a cluster-ip service for the previous deployment
-  - generate service template using: `kubectl create service clusterip cat-svc --tcp=80:5000 --dry-run=client -o yaml > cat-svc-service.yaml`
-- use port forwarding to access the service
-  `kubectl port-forward service/cat-svc 8080:80` where local port 8080 and service port is 80.
-  Now you can go to the ports tab and click on the browser icon next to port 8080.
-- see whether you can see the cat homepage in your browser
-
 ### load-balancer service
 - Start from the loadbalancer template and fill in the necessary information (all <TODO> fields)
   - Add https for your service on port 443 as http traffic is often blocked by firewalls or ruled as insecure by browsers. Use the following code block:
